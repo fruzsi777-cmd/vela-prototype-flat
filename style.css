@@ -1,0 +1,192 @@
+:root {
+  --bg: #05070c;
+  --screen-bg: #000a16;
+  --hot: rgba(64, 128, 255, 0.28);
+  --hot-border: rgba(120, 170, 255, 0.9);
+  --w: 393px;
+  --h: 852px;
+  --scale: 1;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: #8b97ab;
+  font: 13px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+#stage {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(60% 50% at 50% 40%, rgba(20, 60, 140, 0.18), transparent 70%),
+    var(--bg);
+}
+
+/* Desktop: phone with a thin bezel, scaled to fit */
+#device {
+  width: calc(var(--w) + 24px);
+  height: calc(var(--h) + 24px);
+  padding: 12px;
+  border-radius: 64px;
+  background: linear-gradient(145deg, #2a2f3a, #0d1017 40%, #1a1e27);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 40px 120px rgba(0, 0, 0, 0.6),
+    0 0 0 1px #000;
+  transform: scale(var(--scale));
+  transform-origin: center center;
+  flex: none;
+}
+
+#phone {
+  position: relative;
+  width: var(--w);
+  height: var(--h);
+  border-radius: 52px;
+  overflow: hidden;
+  background: var(--screen-bg);
+  isolation: isolate;
+}
+
+/* Mobile: full-bleed, no bezel */
+body.mobile #device {
+  padding: 0;
+  width: var(--w);
+  height: var(--h);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+body.mobile #phone { border-radius: 0; }
+body.mobile #help { display: none; }
+body.mobile #stage { background: var(--screen-bg); }
+
+/* Screens */
+.screen {
+  position: absolute;
+  inset: 0;
+  background: var(--screen-bg);
+  will-change: transform, opacity;
+}
+
+.scroller {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.scroller::-webkit-scrollbar { display: none; }
+
+.canvas {
+  position: relative;
+  width: var(--w);
+  background-repeat: no-repeat;
+  background-size: var(--w) auto;
+  background-position: top left;
+}
+
+.pin {
+  position: absolute;
+  left: 0;
+  width: var(--w);
+  background-repeat: no-repeat;
+  z-index: 5;
+  pointer-events: none;
+}
+.pin > * { pointer-events: auto; }
+.pin.top { top: 0; }
+.pin.bottom { bottom: 0; }
+.pin.bottom::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 64px;
+  background: linear-gradient(to bottom, rgba(3, 15, 33, 0), rgb(3, 15, 33));
+  pointer-events: none;
+}
+
+/* Hotspots */
+.hot {
+  position: absolute;
+  display: block;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 12px;
+  outline: none;
+  transition: background-color 0.25s, box-shadow 0.25s;
+}
+.hot:active { background: rgba(255, 255, 255, 0.06); }
+.hot:focus-visible { box-shadow: 0 0 0 2px var(--hot-border); }
+#phone.reveal .hot {
+  background: var(--hot);
+  box-shadow: 0 0 0 1.5px var(--hot-border) inset;
+}
+
+/* Slide-to-confirm */
+.slide-fill,
+.slide-knob {
+  position: absolute;
+  height: 56px;
+  border-radius: 28px;
+  touch-action: none;
+}
+.slide-fill { z-index: 2; pointer-events: none; }
+.slide-knob {
+  width: 56px;
+  z-index: 3;
+  cursor: grab;
+  background-repeat: no-repeat;
+}
+.slide-knob:active { cursor: grabbing; }
+.slide-knob.nudge { animation: nudge 1.6s ease-in-out 0.6s 2; }
+@keyframes nudge {
+  0%, 100% { transform: translateX(0); }
+  30% { transform: translateX(22px); }
+  55% { transform: translateX(0); }
+}
+
+/* Footer */
+#help {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  color: #5e6a7d;
+  pointer-events: none;
+}
+#help button {
+  pointer-events: auto;
+  font: inherit;
+  color: #9db4ff;
+  background: none;
+  border: 0;
+  padding: 4px 2px;
+  cursor: pointer;
+}
+#help button:hover { text-decoration: underline; }
+#help .dot { opacity: 0.5; }
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-knob.nudge { animation: none; }
+}

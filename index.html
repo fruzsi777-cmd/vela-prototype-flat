@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#000a16" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Vela – Prototype</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%23071a3a%22/%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%228%22 fill=%22none%22 stroke=%22%234d8bff%22 stroke-width=%223%22/%3E%3C/svg%3E" />
+  <link rel="preload" as="image" href="s1.webp" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="stage">
+    <div id="device">
+      <div id="phone" aria-live="polite"></div>
+    </div>
+  </main>
+  <footer id="help">
+    <span>Vela · clickable prototype</span>
+    <span class="dot">·</span>
+    <button id="restart" type="button">Restart</button>
+    <span class="dot">·</span>
+    <span class="hint">Tap anywhere to reveal hotspots</span>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
